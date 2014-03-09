@@ -37,7 +37,7 @@ public class ReproductorUB1B {
                                                 MENU_PRINCIPAL_SORTIR};
     
     // Declarem descripcions personalitzades per a les opcions del menú principal
-    private static final String[] descMenuPrincipal={"Afegir fitxer",
+    private static final String[] descMenuPrincipal={"(B) Afegir fitxer",
                                                     "Mostrar llista",
                                                     "Eliminar fitxer",
                                                     "Guardar llista",
@@ -128,10 +128,10 @@ public class ReproductorUB1B {
                         System.out.println("L'arxiu no s'ha trobat.");
                     } catch (IOException ex) {
                         System.out.println("Error de lectura.");
-                    } catch (ClassNotFoundException ex) {
-                        System.out.println("Classe no trobata.");
+                    } catch ( ClassNotFoundException | ClassCastException ex) {
+                        System.out.println("Classe no trobada.");
                     }
-                    break;                        
+                    break;                                                
                 case MENU_PRINCIPAL_SORTIR:
                     System.out.println("Fins aviat!");
                     break;
@@ -166,14 +166,30 @@ public class ReproductorUB1B {
      * @param sc scanner
      */
     private void eliminarFitxer(Scanner sc){
-        // Donat una ruta, cercar a taula i retornar FitxerAudio
-        System.out.println("Dona la ruta del fitxer a eliminar:");
-        // Demanar dades de ruta per teclat
-        String nomFitxer = sc.nextLine();
-        // Cercar FitxerAudio i si ho troba passar a taula.eliminarFitxer
         
-        // Si no l'ha trobat:
-        System.out.println("No s'ha trobat cap fitxer amb aquesta ruta.");
+        short posicio;
+        
+        // Donat una ruta, cercar a taula i retornar FitxerAudio
+        System.out.println("Dona la posicio del fitxer a eliminar:");
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                posicio = Short.parseShort(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
+            }
+        }
+        
+        if(posicio < this.taula.size()){
+            // Si es posicio valida
+            FitxerAudio Actual = this.taula.get(posicio);
+            this.taula.remove(posicio);
+            System.out.println("Fitxer eliminat.");
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }
     }
     
     /**
@@ -195,14 +211,14 @@ public class ReproductorUB1B {
      * Pas 5 del menu: carregar llista desde fitxer
      * @param sc  scanner
      */
-    private void recuperarLlista(Scanner sc) throws FileNotFoundException, IOException, ClassNotFoundException{
+    private void recuperarLlista(Scanner sc) throws FileNotFoundException, IOException, ClassNotFoundException, ClassCastException{
         // Demana ruta per guardar
         System.out.println("Dona la ruta de l'arxiu per recuperar les dades:");
         // Demanar dades de ruta per teclat
         String nomFitxer = sc.nextLine();
         FileInputStream fin = new FileInputStream(nomFitxer);
         ObjectInputStream ois = new ObjectInputStream(fin);
-        this.taula = (TaulaFitxers) ois.readObject();
+        this.taula = (ArrayList <FitxerAudio>) ois.readObject();
         fin.close();        
     }
     
