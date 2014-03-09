@@ -126,16 +126,19 @@ public class ReproductorUB1A {
         String nomFitxer = sc.nextLine();
         // Crear FitxerAudio;
         FitxerAudio f = new FitxerAudio(nomFitxer);
-        // Introduir Fitxer a TaulaFitxers
-        taula.afegirFitxer(f);
+        if(f.demanaDadesTeclat(sc)){
+            // Introduir Fitxer a TaulaFitxers
+            taula.afegirFitxer(f);
+        } else {
+            System.out.println("Error: dades introduides incorrectes");
+        }
     }
     
     /**
      * Pas 2 del menu: mostra llista de fitxers
      */
     private void mostrarLlista(){
-        
-        
+        System.out.println(this.taula);
     }
     
     /**
@@ -143,7 +146,18 @@ public class ReproductorUB1A {
      * @param sc scanner
      */
     private void eliminarFitxer(Scanner sc){
-        
+        // Donat un nom, cercar i retornar FitxerAudio
+        System.out.println("Dona la ruta del fitxer a eliminar:");
+        // Demanar dades de fitxer per teclat
+        String nomFitxer = sc.nextLine();
+        // Pasar FitxerAudio a taula.eliminarFitxer
+        for(int i=0;i<this.taula.tamany();i++){
+            FitxerAudio Actual = this.taula.getAt(i);
+            if(nomFitxer.equals(Actual.getPath())){
+                // Si path coincideix
+                this.taula.eliminarFitxer(Actual);
+            }
+        }
     }
     
     /**
