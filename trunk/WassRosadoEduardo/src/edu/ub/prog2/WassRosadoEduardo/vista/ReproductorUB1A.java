@@ -162,26 +162,37 @@ public class ReproductorUB1A {
     }
     
     /**
-     * Pas 3 del menu: elimina un fitxer
+     * Pas 3 del menu: elimina un fitxer donada posicio entrada per input
      * @param sc scanner
      */
     private void eliminarFitxer(Scanner sc){
+        
+        short posicio;
+        
         // Donat una ruta, cercar a taula i retornar FitxerAudio
-        System.out.println("Dona la ruta del fitxer a eliminar:");
-        // Demanar dades de ruta per teclat
-        String nomFitxer = sc.nextLine();
-        // Cercar FitxerAudio i si ho troba passar a taula.eliminarFitxer
-        for(int i=0;i<this.taula.tamany();i++){
-            FitxerAudio Actual = this.taula.getAt(i);
-            if(nomFitxer.equals(Actual.getPath())){
-                // Si path coincideix
-                this.taula.eliminarFitxer(Actual);
-                System.out.println("Fitxer eliminat.");
-                return; // finalitzar
+        System.out.println("Dona la posicio del fitxer a eliminar:");
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                posicio = Short.parseShort(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
             }
         }
-        // Si no l'ha trobat:
-        System.out.println("No s'ha trobat cap fitxer amb aquesta ruta.");
+        
+        
+        if(posicio < this.taula.tamany()){
+            // Si es posicio valida
+            FitxerAudio Actual = this.taula.getAt(posicio);
+            this.taula.eliminarFitxer(Actual);
+            System.out.println("Fitxer eliminat.");
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }
+        
+        
     }
     
     /**

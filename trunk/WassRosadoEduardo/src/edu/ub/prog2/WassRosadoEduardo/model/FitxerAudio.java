@@ -7,12 +7,13 @@
 package edu.ub.prog2.WassRosadoEduardo.model;
 import java.util.Scanner;
 import java.io.File;
+import java.io.Serializable;
 
 /**
  *
  * @author mat.aules
  */
-public class FitxerAudio extends File {
+public class FitxerAudio extends File implements Serializable {
     
     // ========================
     // Atributos

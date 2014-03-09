@@ -5,7 +5,6 @@
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
-
 import java.io.Serializable;
 
 /**
@@ -61,7 +60,7 @@ public class TaulaFitxers implements Serializable {
         // Recorrer lista
         for(int i=0;i<this.tamany();i++){
             // Coincideix ?
-            if(fitxer == this.taula[i]){
+            if(fitxer.equals(this.taula[i])){
                 // Si troba que coincideix hem d'eliminar i shiftar la resta
                 // Eliminar posicio actual
                 this.taula[i] = null;
