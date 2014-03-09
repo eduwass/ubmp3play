@@ -23,7 +23,7 @@ public class FitxerAudio extends File {
     private short ano;
     private short numero;
     private String discografica;
-    private int duracion;
+    private double duracion;
 
     
     // ========================
@@ -41,9 +41,8 @@ public class FitxerAudio extends File {
     /**
      * Demana per teclat dades de un FitxerAudio
      * @param sc Scanner
-     * @return boolea Indica si tot ha anat be
      */
-    public boolean demanaDadesTeclat(Scanner sc){
+    public void demanaDadesTeclat(Scanner sc){
         // Demanar dades de fitxer per teclat
         
         System.out.println("Nom:");
@@ -56,30 +55,38 @@ public class FitxerAudio extends File {
         this.disco = sc.nextLine();
         
         System.out.println("Any:");
-        try { 
-            this.ano = Short.parseShort(sc.nextLine());
-        } catch (NumberFormatException e) { 
-            return false; 
+        while(true){
+            try { 
+                this.ano = Short.parseShort(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Any ha de ser númeric!");
+            }
         }
         
         System.out.println("Numero canço:");
-        try { 
-            this.numero = Short.parseShort(sc.nextLine());
-        } catch (NumberFormatException e) { 
-            return false; 
+        while(true){
+            try { 
+                this.numero = Short.parseShort(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Numero ha de ser númeric!");
+            }
         }
         
         System.out.println("Discogràfica:");
         this.discografica = sc.nextLine();
         
         System.out.println("Duracion:");
-        try { 
-            this.duracion = Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) { 
-            return false; 
+        while(true){
+            try { 
+                this.duracion = Double.parseDouble(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Duració ha de ser númeric!");
+            }
         }
         
-        return true;
     }
     
     /**

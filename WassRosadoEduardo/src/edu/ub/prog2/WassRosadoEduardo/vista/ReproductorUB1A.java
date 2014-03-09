@@ -150,12 +150,8 @@ public class ReproductorUB1A {
         String nomFitxer = sc.nextLine();
         // Crear FitxerAudio;
         FitxerAudio f = new FitxerAudio(nomFitxer);
-        if(f.demanaDadesTeclat(sc)){
-            // Introduir Fitxer a TaulaFitxers
-            taula.afegirFitxer(f);
-        } else {
-            System.out.println("Error: dades introduides incorrectes");
-        }
+        f.demanaDadesTeclat(sc);
+        taula.afegirFitxer(f);
     }
     
     /**
