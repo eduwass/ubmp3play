@@ -16,8 +16,9 @@ public class TaulaFitxers {
     // Atributos
     // ========================
     
-    private final FitxerAudio[] taula;
-    private final int tamany = 100;
+    private FitxerAudio[] taula;
+    private final int tamanymax = 100;
+    private int index = 0;
     
     // ========================
     // Funciones
@@ -27,7 +28,7 @@ public class TaulaFitxers {
      * Funcio constructora
      */
     public TaulaFitxers() {
-        taula =  new FitxerAudio[tamany];
+        this.taula =  new FitxerAudio[tamanymax];
     }
     
     /**
@@ -36,7 +37,7 @@ public class TaulaFitxers {
      */
         
     public int tamany(){
-        return tamany;
+        return this.index;
     }
     
     /**
@@ -44,7 +45,10 @@ public class TaulaFitxers {
      * @param fitxer Fitxer a afegir
      */
     public void afegirFitxer(FitxerAudio fitxer){
-        
+        if(this.tamany()<= this.tamanymax){
+            this.taula[index] = fitxer; // afegir fitxer
+            this.index++;               // incrementar index taula
+        } 
     }
     
     /**
@@ -53,7 +57,32 @@ public class TaulaFitxers {
      * @param fitxer
      */
     public void eliminarFitxer(FitxerAudio fitxer){
-        
+        // Recorrer lista
+        for(int i=0;i<this.tamany();i++){
+            // Coincideix ?
+            if(fitxer == this.taula[i]){
+                // Si troba que coincideix hem d'eliminar i shiftar la resta
+                // Eliminar posicio acutal
+                this.taula[i] = null;
+                // Shiftar part dreta de lo eliminat
+                for(int j=i;j<this.tamany();j++){
+                    // desde posicio actual fins a final
+                    if(j+1==this.tamany()){
+                        // si es l'ultima posicio null automatic
+                        this.taula[j] = null;
+                        this.index--; // hem acabat, -1 index
+                    } else {
+                        if(this.taula[j+1]==null){
+                            // si la seguent es null parem de shiftar
+                            this.taula[j] = null;
+                            break;
+                        }
+                        // si no shiftar
+                        this.taula[j] = this.taula[j+1];
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -62,14 +91,19 @@ public class TaulaFitxers {
      * @return FitxerAudio canço
      */
     public FitxerAudio getAt(int position){
-        return null;
+        if(position>=0 && position<=this.tamany()){
+            return this.taula[position];
+        } else {
+            return null;
+        }
     }
     
     /**
      * Eliminar tots els elements de la llista
      */
     public void clear(){
-        
+        this.taula = null;
+        this.taula = new FitxerAudio[tamanymax];
     }
     
     /**
@@ -82,14 +116,18 @@ public class TaulaFitxers {
     
     @Override
     public String toString(){
-        return null;
+        
+        if(this.tamany()==0){
+            return "No hi ha fitxers.";
+        }
+        
+        String retorn = "Llista Fitxers\n"+"==============";
+        for(int i=0;i<this.tamany();i++){
+            retorn += "\n["+i+"] | ";
+            retorn += this.taula[i];
+        }
+        return retorn;
+        
     }
-    
-    /**
-     * Compara dues taules de FitxerAudio per veure si contenen el mateix
-     * @return boolean
-     */
-    public boolean equals(){
-        return false;
-    }    
+
 }
