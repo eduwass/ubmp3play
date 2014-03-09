@@ -6,11 +6,13 @@
 
 package edu.ub.prog2.WassRosadoEduardo.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mat.aules
  */
-public class TaulaFitxers {
+public class TaulaFitxers implements Serializable {
     
     // ========================
     // Atributos
@@ -52,8 +54,7 @@ public class TaulaFitxers {
     }
     
     /**
-     * Elimina una cançó de la llista si coincideix amb la cançó passada. 
-     * Caldrà fer servir el mètode equals de la vostra classe FitxerAudio
+     * Elimina un fitxer de la llista si coincideix amb el fitxer passat.
      * @param fitxer
      */
     public void eliminarFitxer(FitxerAudio fitxer){
@@ -62,7 +63,7 @@ public class TaulaFitxers {
             // Coincideix ?
             if(fitxer == this.taula[i]){
                 // Si troba que coincideix hem d'eliminar i shiftar la resta
-                // Eliminar posicio acutal
+                // Eliminar posicio actual
                 this.taula[i] = null;
                 // Shiftar part dreta de lo eliminat
                 for(int j=i;j<this.tamany();j++){
@@ -114,6 +115,10 @@ public class TaulaFitxers {
         return false;
     }
     
+    /**
+     * Dona output legible de l'objecte TaulaFitxers
+     * @return 
+     */
     @Override
     public String toString(){
         

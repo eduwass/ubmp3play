@@ -82,7 +82,10 @@ public class FitxerAudio extends File {
         return true;
     }
     
-    
+    /**
+     * Dona output legible de l'objecte FitxerAudio
+     * @return 
+     */
     @Override
     public String toString(){
         String retorn = "";
