@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package edu.ub.prog2.WassRosadoEduardo.model;
 import java.io.Serializable;
 
 /**
- *
+ * Classe que implementa una Taula funcional formada per objectes FitxerAudio
  * @author mat.aules
  */
 public class TaulaFitxers implements Serializable {
@@ -34,7 +28,7 @@ public class TaulaFitxers implements Serializable {
     
     /**
      * Retorna el nombre d’elements que hi ha a la llista
-     * @return
+     * @return nombre d'elements de la llista
      */
         
     public int tamany(){
@@ -54,7 +48,7 @@ public class TaulaFitxers implements Serializable {
     
     /**
      * Elimina un fitxer de la llista si coincideix amb el fitxer passat.
-     * @param fitxer
+     * @param fitxer que es vol eliminar
      */
     public void eliminarFitxer(FitxerAudio fitxer){
         // Recorrer lista
@@ -88,7 +82,7 @@ public class TaulaFitxers implements Serializable {
     /**
      * Retorna la cançó a la posició indicada de la llista.
      * @param position posicio indicada
-     * @return FitxerAudio canço
+     * @return FitxerAudio si trobat, null si no existeix posicio
      */
     public FitxerAudio getAt(int position){
         if(position>=0 && position<=this.tamany()){
@@ -108,15 +102,19 @@ public class TaulaFitxers implements Serializable {
     
     /**
      * Indica si la llista està plena
-     * @return boolean
+     * @return boolean true=plena, false=no plena
      */
     protected boolean isFull(){
-        return false;
+        if(this.tamany()==this.tamanymax){
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
      * Dona output legible de l'objecte TaulaFitxers
-     * @return 
+     * @return string legible amb elements de l'objecte
      */
     @Override
     public String toString(){

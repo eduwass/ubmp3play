@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package edu.ub.prog2.WassRosadoEduardo.vista;
 import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
+import java.util.ArrayList;
 import edu.ub.prog2.utils.Menu;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,11 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * Segona implementació del reproductor, fent servir la classe nativa ArrayList.
  * @author ewass
  */
 public class ReproductorUB1B {
@@ -57,6 +51,7 @@ public class ReproductorUB1B {
     }
     
     /**
+     * Funció principal del programa
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -158,11 +153,18 @@ public class ReproductorUB1B {
      * Pas 2 del menu: mostra llista de fitxers
      */
     private void mostrarLlista(){
-        System.out.println(this.taula);
+        int i = 0;
+        String retorn = "";
+        for (FitxerAudio f : this.taula){
+            retorn += "\n["+i+"] | ";
+            retorn += f;
+            i++;
+        }
+        System.out.println(retorn);
     }
     
     /**
-     * Pas 3 del menu: elimina un fitxer
+     * Pas 3 del menu: elimina un fitxer donada posicio entrada per input
      * @param sc scanner
      */
     private void eliminarFitxer(Scanner sc){

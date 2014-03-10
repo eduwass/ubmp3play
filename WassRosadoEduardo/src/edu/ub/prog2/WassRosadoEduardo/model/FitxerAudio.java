@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package edu.ub.prog2.WassRosadoEduardo.model;
 import java.util.Scanner;
 import java.io.File;
 import java.io.Serializable;
 
 /**
- *
+ * Classe que defineix un Fitxer de Audio i el seus atributs.
+ * Heredada de la classe File de Java.
  * @author mat.aules
  */
 public class FitxerAudio extends File implements Serializable {
@@ -40,7 +35,7 @@ public class FitxerAudio extends File implements Serializable {
     }
 
     /**
-     * Demana per teclat dades de un FitxerAudio
+     * Demana per teclat atributs de FitxerAudio i es guarden a l'objecte.
      * @param sc Scanner
      */
     public void demanaDadesTeclat(Scanner sc){
@@ -92,7 +87,7 @@ public class FitxerAudio extends File implements Serializable {
     
     /**
      * Dona output legible de l'objecte FitxerAudio
-     * @return 
+     * @return string legible amb elements de l'objecte
      */
     @Override
     public String toString(){
@@ -111,7 +106,7 @@ public class FitxerAudio extends File implements Serializable {
     /**
      * Compara que dos fitxers tinguin exactament els mateixos atributs
      * @param f2 Fitxer a comparar
-     * @return true/false
+     * @return boolean true=iguals, false=diferents
      */
     public boolean equals(FitxerAudio f2){
         
