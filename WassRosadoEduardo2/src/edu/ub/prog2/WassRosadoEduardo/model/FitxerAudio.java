@@ -1,3 +1,8 @@
+/*
+ * Eduardo Wass Rosado
+ * eduwass@gmail.com
+ */
+
 package edu.ub.prog2.WassRosadoEduardo.model;
 import java.util.Scanner;
 import java.io.File;
@@ -6,7 +11,7 @@ import java.io.Serializable;
 /**
  * Classe que defineix un Fitxer de Audio i el seus atributs.
  * Heredada de la classe File de Java.
- * @author mat.aules
+ * @author edu.wass
  */
 public class FitxerAudio extends File implements Serializable {
     
@@ -36,11 +41,12 @@ public class FitxerAudio extends File implements Serializable {
 
     /**
      * Demana per teclat atributs de FitxerAudio i es guarden a l'objecte.
-     * @param sc Scanner
      */
-    public void demanaDadesTeclat(Scanner sc){
-        // Demanar dades de fitxer per teclat
+    public void demanaDadesTeclat(){
         
+        Scanner sc=new Scanner(System.in);
+        
+        // Demanar dades de fitxer per teclat
         System.out.println("Nom:");
         this.nombre = sc.nextLine();
         

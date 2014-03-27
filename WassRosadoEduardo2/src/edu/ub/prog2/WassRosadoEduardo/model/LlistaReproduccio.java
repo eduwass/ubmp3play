@@ -1,14 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Eduardo Wass Rosado
+ * eduwass@gmail.com
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
 
 /**
  *
- * @author mat.aules
+ * @author edu.wass
  */
 public class LlistaReproduccio {
     
