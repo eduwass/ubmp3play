@@ -5,7 +5,9 @@
 
 package edu.ub.prog2.WassRosadoEduardo.vista;
 import edu.ub.prog2.WassRosadoEduardo.controlador.CtrlReproductor;
+import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
 import edu.ub.prog2.utils.Menu;
+import java.io.File;
 import java.util.Scanner;
 
 /**
@@ -71,7 +73,9 @@ public class ReproductorUB2 {
                                                     "Eliminar fitxer",
                                                     "Menu Anterior"};
     
-
+    // Enlace a Controlador
+    private CtrlReproductor Controlador;
+    
     // ========================
     // Funciones
     // ========================  
@@ -80,9 +84,8 @@ public class ReproductorUB2 {
      * Funcio constructora
      */
     public ReproductorUB2() {
-        // Llamada para inicializar Controlador
-        
-        // (Posteriormente usado en las subfunciones del menu)
+        this.Controlador = new CtrlReproductor();
+
     }
 
     
@@ -167,7 +170,7 @@ public class ReproductorUB2 {
         do {
             // Mostrem les opcions del menú
             menu.mostrarMenu();
-
+            
             // Demanem una opcio
             opcio=(OpcionsMenuBiblioteca) menu.getOpcio(sc);
 
@@ -176,22 +179,22 @@ public class ReproductorUB2 {
                 case MENU_BIBLIOTECA_AFEGIR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 1");
-                     
+                    bibliotecaAfegir(sc);
                     break;
                 case MENU_BIBLIOTECA_MOSTRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 2");
-                    
+                    bibliotecaMostrar(sc);
                     break;
                 case MENU_BIBLIOTECA_BORRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 3");
-                     
+                    bibliotecaBorrar(sc);
                     break;
                 case MENU_BIBLIOTECA_PLAY:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 4");
-                    
+                    bibliotecaPlay(sc);
                     break;                                              
                 case MENU_BIBLIOTECA_SORTIR:
                     System.out.println("Fins aviat!");
@@ -289,4 +292,71 @@ public class ReproductorUB2 {
 
         } while(opcio!=OpcionsMenuLlista.MENU_LLISTA_SORTIR);
     }    
+    
+    /**
+     * Implementa opcio del menu: Afegir fitxer a biblioteca
+     * @param sc 
+     */
+    private void bibliotecaAfegir(Scanner sc){
+        System.out.println("Introdueix ruta de Fitxer:");
+        // Demanar dades de fitxer per teclat
+        String rutaFitxer = sc.nextLine();
+        // Comprovar si existeix ruta
+        File fitxer = new File(rutaFitxer);
+        if(fitxer.exists()){
+            // Crear FitxerAudio;
+            FitxerAudio f = new FitxerAudio(rutaFitxer);
+            // Comprovar si esta repe:
+            if(Controlador.existeixFitxer(f)){
+                System.out.println("Error: fitxer repetit.");
+            } else {
+                f.demanaDadesTeclat(sc);
+                // Llamar a controlador para que inserte fichero
+                Controlador.afegirFitxer(f);                 
+            }                
+        } else {
+            System.out.println("Error: fitxer no existeix.");
+        }
+    }
+    
+    /**
+     * Implementa opcio del menu: mostrar biblioteca
+     * @param sc 
+     */
+    private void bibliotecaMostrar(Scanner sc){
+        Controlador.mostrarBiblioteca();
+    }
+    
+    /**
+     * Implementa opcio del menu: borrar fitxer bibliotca
+     * @param sc 
+     */
+    private void bibliotecaBorrar(Scanner sc){
+        
+        int posicio;
+        System.out.println("Dona la posicio del fitxer a eliminar:");
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                posicio = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
+            }
+        }
+        
+        if((posicio > 0) && (posicio <= Controlador.donaTamanyBiblioteca())){
+            // Recuperar fichero en esa posicion
+            FitxerAudio f = Controlador.donaFitxerAudio(posicio);
+            // Eliminar fichero de biblioteca
+            Controlador.eliminarFitxer(f);
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }
+            
+    }
+    
+    private void bibliotecaPlay(Scanner sc){}
+    
 }
