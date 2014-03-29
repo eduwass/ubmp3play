@@ -23,6 +23,9 @@ public class LlistaFitxers {
     // Funciones
     // ========================  
     
+    /**
+     * Funció constructora
+     */
     public LlistaFitxers(){
         this.taula = new ArrayList<>();
     }
@@ -62,18 +65,26 @@ public class LlistaFitxers {
     
     /**
      * Afegeix un fitxer a la Llista donat fitxer
-     * @param fitxer
+     * @param f
      */
     public void afegirFitxer(FitxerAudio f){
         taula.add(f);
     }
     
     /**
-     * Elimina fitxer de llista donat fitxer
-     * @param fitxer 
+     * Elimina fitxer de llista donat fitxer 
+     * @param f
      */
     public void eliminarFitxer(FitxerAudio f){
         taula.remove(f);
-    }    
+    }
+    
+    /**
+     * Retorna tamany de la llista
+     * @return int
+     */
+    public int tamany(){
+        return taula.size();
+    }
 
 }

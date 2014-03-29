@@ -6,8 +6,10 @@
 package edu.ub.prog2.WassRosadoEduardo.vista;
 import edu.ub.prog2.WassRosadoEduardo.controlador.CtrlReproductor;
 import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
+import edu.ub.prog2.WassRosadoEduardo.model.LlistaReproduccio;
 import edu.ub.prog2.utils.Menu;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -226,17 +228,17 @@ public class ReproductorUB2 {
                 case MENU_LLISTES_AFEGIR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 1");
-                     
+                    llistesAfegir(sc);
                     break;
                 case MENU_LLISTES_MOSTRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 2");
-                    
+                    llistesMostrar(sc);
                     break;
                 case MENU_LLISTES_BORRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 3");
-                     
+                    llistesBorrar(sc);
                     break;
                 case MENU_LLISTES_GESTIONAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
@@ -273,17 +275,17 @@ public class ReproductorUB2 {
                 case MENU_LLISTA_AFEGIR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 1");
-                     
+                    llistaAfegir(sc);
                     break;
                 case MENU_LLISTA_MOSTRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 2");
-                    
+                    llistaMostrar(sc);
                     break;
                 case MENU_LLISTA_BORRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 3");
-                     
+                    llistaBorrar(sc);
                     break;                                         
                 case MENU_LLISTA_SORTIR:
                     System.out.println("Fins aviat!");
@@ -357,6 +359,87 @@ public class ReproductorUB2 {
             
     }
     
-    private void bibliotecaPlay(Scanner sc){}
-    
+    private void bibliotecaPlay(Scanner sc){
+        
+    }
+
+    /**
+     * Implementa opció del menu: afegir llista
+     * @param sc 
+     */
+    private void llistesAfegir(Scanner sc) {
+        
+        // Demanar nom llista
+        String nombre;
+        System.out.println("Nom:");
+        nombre = sc.nextLine();
+        
+        // Comprovar que no estigui repetida
+        if(Controlador.existeixLlista(nombre)){
+            System.out.println("Error: ja existeix una llista amb aquest nom.");
+        } else {        
+            // Si no esta repetida, crear
+            Controlador.crearLlistaReproduccio(nombre);
+        }
+        
+        
+        
+    }
+
+    /**
+     * Implementa opció del menu: mostrar llistes
+     * @param sc 
+     */
+    private void llistesMostrar(Scanner sc) {
+        ArrayList<String> llistes = Controlador.getLlistesReproduccio();
+        String retorn = "";
+        int i = 1;
+        for(String llista:llistes){
+            retorn += "\n["+i+"] | ";
+            retorn += llista;
+            i++;
+        }
+        System.out.println(retorn);
+    }
+
+    /**
+     * Implementa opció del menu: elmininar llista
+     * @param sc 
+     */
+    private void llistesBorrar(Scanner sc) {
+        
+        int posicio;
+        System.out.println("Dona la posicio de la llista a eliminar:");
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                posicio = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
+            }
+        }
+        
+        if((posicio > 0) && (posicio <= Controlador.donaTamanyLlistes())){
+            // Eliminar fichero de biblioteca
+            Controlador.eliminarLlistaReproduccio(posicio);
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }
+        
+    }
+
+    private void llistaAfegir(Scanner sc) {
+        
+    }
+
+    private void llistaMostrar(Scanner sc) {
+        
+    }
+
+    private void llistaBorrar(Scanner sc) {
+        
+    }
+
 }

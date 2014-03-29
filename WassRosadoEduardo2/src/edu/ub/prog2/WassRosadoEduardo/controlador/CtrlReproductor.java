@@ -7,6 +7,7 @@
 package edu.ub.prog2.WassRosadoEduardo.controlador;
 import edu.ub.prog2.WassRosadoEduardo.model.*;
 import edu.ub.prog2.utils.FitxerAudioErrorException;
+import java.util.ArrayList;
 
 /**
  *
@@ -81,15 +82,15 @@ public class CtrlReproductor {
      * @param nomLlista 
      */
     public void crearLlistaReproduccio(String nomLlista){
-    
+        Modelo.afegirLlista(nomLlista);
     }
     
     /**
      * Elimina llista de reproducció donada
      * @param llista 
      */
-    public void eliminarLlistaReproduccio(LlistaReproduccio llista){
-    
+    public void eliminarLlistaReproduccio(int posicio){
+        Modelo.eliminarLlista(posicio);
     }
     
     /**
@@ -105,7 +106,9 @@ public class CtrlReproductor {
      * Retorna noms de les llistes de reproducció
      * @return 
      */
-    public String [] getLlistesReproduccio(){return null;};
+    public ArrayList<String> getLlistesReproduccio(){
+        return Modelo.getLlistesReproduccio();
+    };
     
     /**
      * Retorna llista de reproducció donat el seu nom
@@ -150,12 +153,12 @@ public class CtrlReproductor {
     }
     
     /**
-     * Comprova si existeix llista de reproducció donada posicio
-     * @param posicio
+     * Comprova si existeix llista de reproducció donat nom llista
+     * @param nomllista
      * @return booleà
      */
-    public boolean existeixLlista(int posicio){
-        return false;
+    public boolean existeixLlista(String nomllista){
+        return Modelo.existeixLlista(nomllista);
     }
     
     /**
@@ -187,5 +190,22 @@ public class CtrlReproductor {
         
     }
     
+    /**
+     * Dona quantitat de llistes de reproducció
+     * @return int
+     */
+    public int donaTamanyLlistes(){
+        return Modelo.donaTamanyLlistes();
+    }
+
+    /**
+     * Dona llista de reproducció donada posició
+     * @param posicio
+     * @return LlistaReproduccio
+     */
+    public LlistaReproduccio donaLlista(int posicio) {
+        return Modelo.donaLlista(posicio);
+    }
+
     
 }
