@@ -4,7 +4,6 @@
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -24,56 +23,57 @@ public class LlistaFitxers {
     // Funciones
     // ========================  
     
+    public LlistaFitxers(){
+        this.taula = new ArrayList<>();
+    }
     
     /**
      * Mostra llista per pantalla
      */
-    private void mostrarLlista(){
-        int i = 0;
-        String retorn = "";
-        for (FitxerAudio f : this.taula){
-            retorn += "\n["+i+"] | ";
-            retorn += f;
-            i++;
+    public void mostrarLlista(){
+        if (this.taula.size()>0){
+            int i = 1;
+            String retorn = "";
+            for (FitxerAudio f : this.taula){
+                retorn += "\n["+i+"] | ";
+                retorn += f;
+                i++;
+            }
+            System.out.println(retorn);            
+        } else {
+            System.out.println("No hi ha fitxers.");
         }
-        System.out.println(retorn);
+
     }
     
     /**
-     * Afegeix un fitxer a la Llista
-     * @param ruta (ruta del fitxer que es vol afegir)
-     * @return boolea que indica l'exit
+     * Comprova si existeix fitxer a la llista de fitxers
+     * @param f
+     * @return booleà
      */
-    private boolean afegirFitxer(String ruta){
-        // Comprovar si existeix ruta
-        File fitxer = new File(ruta);
-        if(fitxer.exists()){
-            // Si es una ruta valida
-            // Crear FitxerAudio;
-            FitxerAudio f = new FitxerAudio(ruta);
-            f.demanaDadesTeclat();
-            taula.add(f);
-            return true;
-        } else { 
-            // Si no:
-            return false;
+    public boolean existeixFitxer(FitxerAudio f){
+        for (FitxerAudio f2 : this.taula){
+            // Recorrer y si se encuentra return true
+            if(f.equals(f2)) return true;
         }
-        
+        // Si no se encuentra return false
+        return false;
     }
+    
     /**
-     * Elimina fitxer indicat per posicio
-     * @param posicio 
+     * Afegeix un fitxer a la Llista donat fitxer
+     * @param fitxer
      */
-    private boolean eliminarFitxer(int posicio){
-        if(posicio < this.taula.size()){
-            // Si es posicio valida
-            FitxerAudio Actual = this.taula.get(posicio);
-            this.taula.remove(posicio);
-            return true;
-        } else {
-            // Si no:
-            return false;
-        }
+    public void afegirFitxer(FitxerAudio f){
+        taula.add(f);
+    }
+    
+    /**
+     * Elimina fitxer de llista donat fitxer
+     * @param fitxer 
+     */
+    public void eliminarFitxer(FitxerAudio f){
+        taula.remove(f);
     }    
 
 }

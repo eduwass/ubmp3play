@@ -42,9 +42,7 @@ public class FitxerAudio extends File implements Serializable {
     /**
      * Demana per teclat atributs de FitxerAudio i es guarden a l'objecte.
      */
-    public void demanaDadesTeclat(){
-        
-        Scanner sc=new Scanner(System.in);
+    public void demanaDadesTeclat(Scanner sc){
         
         // Demanar dades de fitxer per teclat
         System.out.println("Nom:");
@@ -109,22 +107,22 @@ public class FitxerAudio extends File implements Serializable {
         return retorn;
     }
     
-    /**
-     * Compara que dos fitxers tinguin exactament els mateixos atributs
-     * @param f2 Fitxer a comparar
-     * @return boolean true=iguals, false=diferents
-     */
-    public boolean equals(FitxerAudio f2){
-        
-        if(!this.getPath().equals(f2.getPath()))          { return false; }
-        if(!this.nombre.equals(f2.nombre) )               { return false; }
-        if(!this.autor.equals(f2.autor) )                 { return false; }
-        if(!this.disco.equals(f2.disco) )                 { return false; }
-        if(this.ano != f2.ano )                           { return false; }
-        if(this.numero != f2.numero )                     { return false; }
-        if(!this.discografica.equals(f2.discografica) )   { return false; }
-        if(this.duracion != f2.duracion )                 { return false; }        
-        
-        return true;
-    }        
+//    /**
+//     * Compara que dos fitxers tinguin exactament els mateixos atributs
+//     * @param f2 Fitxer a comparar
+//     * @return boolean true=iguals, false=diferents
+//     */
+//    public boolean equals(FitxerAudio f2){
+//
+//        if(!this.getPath().equals(f2.getPath()))          { return false; }
+//        if(!this.nombre.equals(f2.nombre) )               { return false; }
+//        if(!this.autor.equals(f2.autor) )                 { return false; }
+//        if(!this.disco.equals(f2.disco) )                 { return false; }
+//        if(this.ano != f2.ano )                           { return false; }
+//        if(this.numero != f2.numero )                     { return false; }
+//        if(!this.discografica.equals(f2.discografica) )   { return false; }
+//        if(this.duracion != f2.duracion )                 { return false; }        
+//
+//        return true;
+//    }        
 }
