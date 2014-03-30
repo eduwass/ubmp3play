@@ -99,7 +99,7 @@ public class CtrlReproductor {
      * @throws FitxerAudioErrorException 
      */
     public void play(FitxerAudio fitxer) throws FitxerAudioErrorException{
-        
+        // No implementat
     }
     
     /**
@@ -131,25 +131,6 @@ public class CtrlReproductor {
      */
     public boolean existeixFitxer(FitxerAudio f){
         return Modelo.existeixFitxerBiblioteca(f);
-    }
-    
-    /**
-     * Comprova si existeix un fitxer a la biblioteca donada posicio
-     * @param posicio
-     * @return booleà
-     */
-    public boolean existeixPosicio(int posicio){
-        return false;
-    }
-    
-    /**
-     * Comprova si existeix un fitxer a una llista, donada posicio i llista
-     * @param posicio
-     * @param llista
-     * @return booleà
-     */
-    public boolean existeixPosicio(int posicio, LlistaReproduccio llista){
-        return false;
     }
     
     /**
@@ -209,6 +190,14 @@ public class CtrlReproductor {
 
     public void mostrarLlista(LlistaReproduccio llista) {
         Modelo.mostrarLlista(llista);
+    }
+
+    public Object donaDadesReproductor() {
+        return Modelo.donaDadesReproductor();
+    }
+
+    public void carregarDadesReproductor(DadesReproductor readObject) {
+        Modelo.carregarDadesReproductor(readObject);
     }
 
     

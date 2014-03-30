@@ -5,12 +5,13 @@
 
 package edu.ub.prog2.WassRosadoEduardo.model;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  *
  * @author edu.wass
  */
-public class LlistaFitxers {
+public class LlistaFitxers implements Serializable {
  
     // ========================
     // Atributos

@@ -5,10 +5,17 @@
 
 package edu.ub.prog2.WassRosadoEduardo.vista;
 import edu.ub.prog2.WassRosadoEduardo.controlador.CtrlReproductor;
+import edu.ub.prog2.WassRosadoEduardo.model.DadesReproductor;
 import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
 import edu.ub.prog2.WassRosadoEduardo.model.LlistaReproduccio;
 import edu.ub.prog2.utils.Menu;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -108,7 +115,8 @@ public class ReproductorUB2 {
     
     
     /**
-     * Funció que gestiona el menu
+     * Funció que gestiona el menu principal
+     * @param sc 
      */
     private void gestioMenuPrincipal(Scanner sc) {
    
@@ -143,11 +151,25 @@ public class ReproductorUB2 {
                 case MENU_PRINCIPAL_GUARDAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 3");
-                     
+                    try {
+                        guardar(sc);
+                    } catch (IOException ex) {
+                        System.out.println("Error: no s'ha pogut guardar.");
+                    }
                     break;
                 case MENU_PRINCIPAL_CARREGAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 4");
+                    try {
+                        carregar(sc);
+                    } catch (FileNotFoundException ex1){
+                        System.out.println("Error: no s'ha pogut carregar (FileNotFoundException)");
+                    } catch (IOException ex2){
+                        System.out.println("Error: no s'ha pogut carregar (IOException)");
+                        System.out.println(ex2.getMessage());
+                    } catch (ClassNotFoundException ex3){
+                        System.out.println("Error: no s'ha pogut carregar (ClassNotFoundException)");
+                    }
                     
                     break;                                              
                 case MENU_PRINCIPAL_SORTIR:
@@ -158,7 +180,11 @@ public class ReproductorUB2 {
         } while(opcio!=OpcionsMenuPrincipal.MENU_PRINCIPAL_SORTIR);
     
     }
-        
+    
+    /**
+     * Funció que gestiona el menu de biblioteca
+     * @param sc 
+     */
     private void gestioMenuBiblioteca(Scanner sc){
         // Creem l'objecte per al menú. 
         // Li passem com a primer paràmetre el nom del menú
@@ -206,6 +232,10 @@ public class ReproductorUB2 {
         } while(opcio!=OpcionsMenuBiblioteca.MENU_BIBLIOTECA_SORTIR);
     }
 
+    /**
+     * Funció que gestiona el menu de llistes de reproducció
+     * @param sc 
+     */
     private void gestioMenuLlistes(Scanner sc){
         // Creem l'objecte per al menú. 
         // Li passem com a primer paràmetre el nom del menú
@@ -253,6 +283,10 @@ public class ReproductorUB2 {
         } while(opcio!=OpcionsMenuLlistes.MENU_LLISTES_SORTIR);
     }
 
+    /**
+     * Funció que gestiona el menu de gestió de una llista
+     * @param sc 
+     */    
     private void gestioMenuLlista(Scanner sc){
         
         llistesMostrar();
@@ -379,9 +413,13 @@ public class ReproductorUB2 {
         }
             
     }
-    
+
+    /**
+     * Implementa opció del menu: reproduir arxiu
+     * @param sc 
+     */    
     private void bibliotecaPlay(Scanner sc){
-        
+        // No implementat
     }
 
     /**
@@ -428,7 +466,7 @@ public class ReproductorUB2 {
     }
 
     /**
-     * Implementa opció del menu: elmininar llista
+     * Implementa opció del menu: elimininar llista
      * @param sc 
      */
     private void llistesBorrar(Scanner sc) {
@@ -528,5 +566,38 @@ public class ReproductorUB2 {
             System.out.println("Posicio no existeix.");
         }
     }
+
+    /**
+     * Implementa opcio del menú: guardar
+     * @param sc 
+     */        
+    private void guardar(Scanner sc) throws IOException{
+        
+        // Demana ruta per guardar
+        System.out.println("Dona la ruta per guardar llista:");
+        // Demanar dades de ruta per teclat
+        String nomFitxer = sc.nextLine();
+        FileOutputStream fout = new FileOutputStream(nomFitxer);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
+        oos.writeObject(Controlador.donaDadesReproductor());
+        fout.close();
+               
+    }
+
+    /**
+     * Implementa opcio del menú: carregar
+     * @param sc 
+     */        
+    private void carregar(Scanner sc) throws FileNotFoundException, IOException, ClassNotFoundException{
+        // Demana ruta per guardar
+        System.out.println("Dona la ruta de l'arxiu per recuperar les dades:");
+        // Demanar dades de ruta per teclat
+        String nomFitxer = sc.nextLine();
+        try (FileInputStream fin = new FileInputStream(nomFitxer)) {
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            Controlador.carregarDadesReproductor((DadesReproductor) ois.readObject());
+        }            
+    }
+    
 
 }
