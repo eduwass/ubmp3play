@@ -8,12 +8,13 @@ package edu.ub.prog2.WassRosadoEduardo.model;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  *
  * @author edu.wass
  */
-public class DadesReproductor {
+public class DadesReproductor implements Serializable {
     
     // ========================
     // Atributos
@@ -24,6 +25,9 @@ public class DadesReproductor {
     
     // una coleccion de listas de reproduccion (LlistaReproduccio)
     private ArrayList<LlistaReproduccio> llistes_reproduccio;
+    
+    // debemos declarar el serialVersionUID del  para garantizar la serialización!
+    private static final long serialVersionUID = 123456789;
     
     // ========================
     // Funciones
@@ -71,6 +75,11 @@ public class DadesReproductor {
      */
     public void eliminarFitxerBiblioteca(FitxerAudio fitxer) {
         biblioteca.eliminarFitxer(fitxer);
+        for(LlistaReproduccio llista:llistes_reproduccio){
+            if(llista.existeixFitxer(fitxer)){
+                llista.eliminarFitxer(fitxer);
+            }
+        }
     }
     
     /**
@@ -150,6 +159,10 @@ public class DadesReproductor {
         llistes_reproduccio.add(llista);
     }
     
+    /**
+     * Elimina llista donada posició
+     * @param posicio 
+     */
     public void eliminarLlista(int posicio){
         llistes_reproduccio.remove(posicio-1);
     }
@@ -164,6 +177,11 @@ public class DadesReproductor {
         return biblioteca.taula.size();
     }
 
+    /**
+     * Dona FitxerAudio de biblioteca donada posició
+     * @param posicio
+     * @return FitxerAudio
+     */
     public FitxerAudio donaFitxerAudio(int posicio) {
         return biblioteca.taula.get(posicio-1);
     }
@@ -197,8 +215,27 @@ public class DadesReproductor {
         return this.llistes_reproduccio.get(posicio-1);
     }
 
+    /**
+     * Dona FitxerAudio donada llista i posició a la llista
+     * @param posicio
+     * @param llista
+     * @return FitxerAudio
+     */
     public FitxerAudio donaFitxerAudio(int posicio, LlistaReproduccio llista) {
         return llista.donaFitxer(posicio);
+    }
+
+    /**
+     * Retorna tot l'objecte DadesReproductor (biblioteca i llistes)
+     * @return objecte
+     */
+    public DadesReproductor donaDadesReproductor() {
+        return this;
+    }
+
+    public void carregarDadesReproductor(DadesReproductor readObject) {
+        this.biblioteca = readObject.biblioteca;
+        this.llistes_reproduccio = readObject.llistes_reproduccio;
     }
     
 }

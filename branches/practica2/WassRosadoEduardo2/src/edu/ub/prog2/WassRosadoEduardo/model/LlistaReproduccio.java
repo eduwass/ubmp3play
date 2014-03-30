@@ -4,12 +4,13 @@
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
+import java.io.Serializable;
 
 /**
  *
  * @author edu.wass
  */
-public class LlistaReproduccio {
+public class LlistaReproduccio implements Serializable {
     // ========================
     // Atributos
     // ========================    
@@ -54,7 +55,7 @@ public class LlistaReproduccio {
      * @return booleà
      */
     public boolean existeixFitxer(FitxerAudio f){
-        return this.existeixFitxer(f);
+        return this.llista.existeixFitxer(f);
     }   
      /**
      * Afegeix un fitxer a la Llista donat fitxer
@@ -77,10 +78,19 @@ public class LlistaReproduccio {
         this.llista.eliminarFitxer(f);
     }
     
+    /**
+     * Dona tamany de llista de reproducció
+     * @return int
+     */
     public int donaTamany(){
         return this.llista.tamany();
     }
 
+    /**
+     * Dona fitxer en llista de reproducció donada posició
+     * @param posicio
+     * @return FitxerAudio
+     */
     public FitxerAudio donaFitxer(int posicio) {
         return this.llista.taula.get(posicio-1);
     }
