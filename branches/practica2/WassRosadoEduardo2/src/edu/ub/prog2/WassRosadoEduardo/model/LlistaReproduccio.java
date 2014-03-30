@@ -75,6 +75,14 @@ public class LlistaReproduccio {
      */
     public void eliminarFitxer(FitxerAudio f){
         this.llista.eliminarFitxer(f);
-    }       
+    }
+    
+    public int donaTamany(){
+        return this.llista.tamany();
+    }
+
+    public FitxerAudio donaFitxer(int posicio) {
+        return this.llista.taula.get(posicio-1);
+    }
     
 }

@@ -233,7 +233,7 @@ public class ReproductorUB2 {
                 case MENU_LLISTES_MOSTRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
                     System.out.println("Has triat la opció 2");
-                    llistesMostrar(sc);
+                    llistesMostrar();
                     break;
                 case MENU_LLISTES_BORRAR:
                     // Mostrem un missatge indicant que s'ha triat aquesta opció
@@ -254,45 +254,66 @@ public class ReproductorUB2 {
     }
 
     private void gestioMenuLlista(Scanner sc){
-        // Creem l'objecte per al menú. 
-        // Li passem com a primer paràmetre el nom del menú
-        Menu menu=new Menu("Menu Llista",OpcionsMenuLlista.values());
-
-        // Assignem la descripció de les opcions
-        menu.setDescripcions(descMenuLlista);
-
-        // Obtenim una opció des del menú i fem les accions pertinents
-        OpcionsMenuLlista opcio = null;
-        do {
-            // Mostrem les opcions del menú
-            menu.mostrarMenu();
-
-            // Demanem una opcio
-            opcio=(OpcionsMenuLlista) menu.getOpcio(sc);
-
-            // Fem les accions necessàries
-            switch(opcio) {
-                case MENU_LLISTA_AFEGIR:
-                    // Mostrem un missatge indicant que s'ha triat aquesta opció
-                    System.out.println("Has triat la opció 1");
-                    llistaAfegir(sc);
-                    break;
-                case MENU_LLISTA_MOSTRAR:
-                    // Mostrem un missatge indicant que s'ha triat aquesta opció
-                    System.out.println("Has triat la opció 2");
-                    llistaMostrar(sc);
-                    break;
-                case MENU_LLISTA_BORRAR:
-                    // Mostrem un missatge indicant que s'ha triat aquesta opció
-                    System.out.println("Has triat la opció 3");
-                    llistaBorrar(sc);
-                    break;                                         
-                case MENU_LLISTA_SORTIR:
-                    System.out.println("Fins aviat!");
-                    break;
+        
+        llistesMostrar();
+        
+        int posicio;
+        System.out.println("Dona la posicio de la llista que vols gestionar:");
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                posicio = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
             }
+        }
+        
+        if((posicio > 0) && (posicio <= Controlador.donaTamanyLlistes())){
 
-        } while(opcio!=OpcionsMenuLlista.MENU_LLISTA_SORTIR);
+            // Creem l'objecte per al menú. 
+            // Li passem com a primer paràmetre el nom del menú
+            Menu menu=new Menu("Menu Llista",OpcionsMenuLlista.values());
+
+            // Assignem la descripció de les opcions
+            menu.setDescripcions(descMenuLlista);
+
+            // Obtenim una opció des del menú i fem les accions pertinents
+            OpcionsMenuLlista opcio = null;
+            do {
+                // Mostrem les opcions del menú
+                menu.mostrarMenu();
+
+                // Demanem una opcio
+                opcio=(OpcionsMenuLlista) menu.getOpcio(sc);
+
+                // Fem les accions necessàries
+                switch(opcio) {
+                    case MENU_LLISTA_AFEGIR:
+                        // Mostrem un missatge indicant que s'ha triat aquesta opció
+                        System.out.println("Has triat la opció 1");
+                        llistaAfegir(sc, posicio);
+                        break;
+                    case MENU_LLISTA_MOSTRAR:
+                        // Mostrem un missatge indicant que s'ha triat aquesta opció
+                        System.out.println("Has triat la opció 2");
+                        llistaMostrar(sc, posicio);
+                        break;
+                    case MENU_LLISTA_BORRAR:
+                        // Mostrem un missatge indicant que s'ha triat aquesta opció
+                        System.out.println("Has triat la opció 3");
+                        llistaBorrar(sc, posicio);
+                        break;                                         
+                    case MENU_LLISTA_SORTIR:
+                        System.out.println("Fins aviat!");
+                        break;
+                }
+
+            } while(opcio!=OpcionsMenuLlista.MENU_LLISTA_SORTIR);            
+            
+        }        
+        
+
     }    
     
     /**
@@ -388,18 +409,22 @@ public class ReproductorUB2 {
 
     /**
      * Implementa opció del menu: mostrar llistes
-     * @param sc 
      */
-    private void llistesMostrar(Scanner sc) {
-        ArrayList<String> llistes = Controlador.getLlistesReproduccio();
-        String retorn = "";
-        int i = 1;
-        for(String llista:llistes){
-            retorn += "\n["+i+"] | ";
-            retorn += llista;
-            i++;
+    private void llistesMostrar() {
+        if(Controlador.donaTamanyLlistes()>0){
+            ArrayList<String> llistes = Controlador.getLlistesReproduccio();
+            String retorn = "";
+            int i = 1;
+            for(String llista:llistes){
+                retorn += "\n["+i+"] | ";
+                retorn += llista;
+                i++;
+            }
+            System.out.println(retorn);            
+        } else {
+            System.out.println("No hi ha llistes de reproducció.");
         }
-        System.out.println(retorn);
+
     }
 
     /**
@@ -430,16 +455,78 @@ public class ReproductorUB2 {
         
     }
 
-    private void llistaAfegir(Scanner sc) {
+    /**
+     * Implementa opcio del menú: afegir fitxer a llista
+     * @param sc 
+     */
+    private void llistaAfegir(Scanner sc, int posicio) {
+        bibliotecaMostrar(sc);
+        System.out.println("Introdueix posició del Fitxer que vols afegir a llista:");
+        // Demanar posicio de fitxer a afegir a llista
+        int fitxer;
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                fitxer = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
+            }
+        }
         
+        if((fitxer > 0) && (fitxer <= Controlador.donaTamanyBiblioteca())){
+            // Recuperar fichero en esa posicion
+            FitxerAudio f = Controlador.donaFitxerAudio(fitxer);
+            LlistaReproduccio l = Controlador.donaLlista(posicio);
+            Controlador.afegirFitxer(f, l);
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }       
     }
 
-    private void llistaMostrar(Scanner sc) {
-        
+     /**
+     * Implementa opcio del menú: mostrar fitxers de llista
+     * @param sc 
+     */
+    private void llistaMostrar(Scanner sc, int posicio) {
+        LlistaReproduccio llista = Controlador.donaLlista(posicio);
+        Controlador.mostrarLlista(llista);
     }
 
-    private void llistaBorrar(Scanner sc) {
+
+    /**
+     * Implementa opcio del menú: eliminar fitxer de llista
+     * @param sc 
+     */    
+    private void llistaBorrar(Scanner sc, int posicio) {
         
+        // Obtenir info llista actual
+        LlistaReproduccio llista = Controlador.donaLlista(posicio);
+        int tamanyllista = llista.donaTamany();
+        
+        llistaMostrar(sc, posicio);
+        System.out.println("Introdueix posició del Fitxer que vols eliminar:");
+        // Demanar posicio de fitxer a afegir a llista
+        int fitxer;
+        // Demanar dades de posicio per teclat
+        while(true){
+            try { 
+                fitxer = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (NumberFormatException e) { 
+                System.out.println("Error: Posició de ser númeric!");
+            }
+        }
+        
+        if((fitxer > 0) && (fitxer <= tamanyllista)){
+            // Recuperar fichero en esa posicion
+            FitxerAudio f = llista.donaFitxer(fitxer);
+            Controlador.eliminarFitxer(f, llista);
+        } else {
+            // Si no:
+            System.out.println("Posicio no existeix.");
+        }
     }
 
 }
