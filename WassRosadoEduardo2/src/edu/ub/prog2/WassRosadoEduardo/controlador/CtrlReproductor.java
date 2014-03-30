@@ -177,7 +177,7 @@ public class CtrlReproductor {
      * @return FitxerAudio
      */
     public FitxerAudio donaFitxerAudio(int posicio, LlistaReproduccio llista){
-        return null;
+        return Modelo.donaFitxerAudio(posicio, llista);
     }
 
     /**
@@ -205,6 +205,10 @@ public class CtrlReproductor {
      */
     public LlistaReproduccio donaLlista(int posicio) {
         return Modelo.donaLlista(posicio);
+    }
+
+    public void mostrarLlista(LlistaReproduccio llista) {
+        Modelo.mostrarLlista(llista);
     }
 
     

@@ -105,7 +105,7 @@ public class DadesReproductor {
      * @param lrep 
      */
     public void afegirFitxerLlista(FitxerAudio fitxer, LlistaReproduccio lrep) {
-    
+        lrep.afegirFitxer(fitxer);
     }
     
     /**
@@ -114,7 +114,7 @@ public class DadesReproductor {
      * @param lrep 
      */
     public void eliminarFitxerLlista(FitxerAudio fitxer, LlistaReproduccio lrep){
-        
+        lrep.eliminarFitxer(fitxer);
     }
     
     /**
@@ -130,6 +130,14 @@ public class DadesReproductor {
      */
     public void mostrarBiblioteca(){
         biblioteca.mostrarLlista();
+    }
+    
+    /**
+     * Mostra continguts llista reproducció
+     * @param llista 
+     */
+    public void mostrarLlista(LlistaReproduccio llista){
+        llista.mostrarLlista();
     }
     
     /**
@@ -187,6 +195,10 @@ public class DadesReproductor {
      */
     public LlistaReproduccio donaLlista(int posicio) {
         return this.llistes_reproduccio.get(posicio-1);
+    }
+
+    public FitxerAudio donaFitxerAudio(int posicio, LlistaReproduccio llista) {
+        return llista.donaFitxer(posicio);
     }
     
 }
