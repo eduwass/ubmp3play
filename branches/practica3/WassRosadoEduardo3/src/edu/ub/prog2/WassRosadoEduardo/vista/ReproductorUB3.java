@@ -23,7 +23,7 @@ import java.util.Scanner;
  * Classe que implementa l'objecte principal de la vista
  * @author edu.wass
  */
-public class ReproductorUB2 {
+public class ReproductorUB3 {
 
     
     // ========================
@@ -92,7 +92,7 @@ public class ReproductorUB2 {
     /**
      * Funcio constructora
      */
-    public ReproductorUB2() {
+    public ReproductorUB3() {
         this.Controlador = new CtrlReproductor();
 
     }
@@ -106,8 +106,8 @@ public class ReproductorUB2 {
          // Creem un objecte per llegir des del teclat
         Scanner sc=new Scanner(System.in);       
 
-        // Crear objeto ReproductorUB2
-        ReproductorUB2 repro=new ReproductorUB2();
+        // Crear objeto ReproductorUB3
+        ReproductorUB3 repro=new ReproductorUB3();
         
         // Mostrar menu
         repro.gestioMenuPrincipal(sc);
