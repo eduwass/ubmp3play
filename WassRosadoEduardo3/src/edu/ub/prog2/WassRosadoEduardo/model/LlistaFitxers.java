@@ -87,5 +87,5 @@ public class LlistaFitxers implements Serializable {
     public int tamany(){
         return taula.size();
     }
-
+    
 }

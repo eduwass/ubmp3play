@@ -6,7 +6,9 @@
 
 package edu.ub.prog2.WassRosadoEduardo.controlador;
 import edu.ub.prog2.WassRosadoEduardo.model.*;
+import edu.ub.prog2.WassRosadoEduardo.controlador.*;
 import edu.ub.prog2.utils.FitxerAudioErrorException;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,11 @@ public class CtrlReproductor {
     // ========================    
 
     // Enlace a Modelo
-    private DadesReproductor Modelo;
+    private final DadesReproductor Modelo;
+    
+    // Reproductor
+    private final ReproductorAudio Reproductor;
+    
     
     // ========================
     // Funciones
@@ -31,7 +37,8 @@ public class CtrlReproductor {
      */
     public CtrlReproductor(){
         this.Modelo = new DadesReproductor();
-        
+        this.Reproductor = new ReproductorAudio();
+        Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
     }
     
     /**
@@ -92,15 +99,7 @@ public class CtrlReproductor {
     public void eliminarLlistaReproduccio(int posicio){
         Modelo.eliminarLlista(posicio);
     }
-    
-    /**
-     * Reprodueix el fitxer d'audio donat
-     * @param fitxer
-     * @throws FitxerAudioErrorException 
-     */
-    public void play(FitxerAudio fitxer) throws FitxerAudioErrorException{
-        // No implementat
-    }
+
     
     /**
      * Retorna noms de les llistes de reproducció
@@ -200,5 +199,52 @@ public class CtrlReproductor {
         Modelo.carregarDadesReproductor(readObject);
     }
 
+    
+    /**
+     * Reproduix fitxer por posicio
+     * @param pos
+     */
+    public void playFitxer(int pos){}
+    
+    /**
+     * Reprodueix fitxer donat objecte
+     * @param fitxer
+     * @throws edu.ub.prog2.utils.FitxerAudioErrorException
+     */
+    public void playFitxer(FitxerAudio fitxer) throws FitxerAudioErrorException{
+        LlistaFitxers list = new LlistaFitxers();
+        list.afegirFitxer(fitxer);
+        this.playLlista(list);
+    }
+    
+    /**
+     * Reprodueix biblioteca
+     */
+    public void playLlista(){}
+    
+    /**
+     * Reprodueix llista de reproduccio donada
+     * @param llista 
+     */
+    public void playLlista(LlistaFitxers llista) throws FitxerAudioErrorException{
+        Reproductor.playFilesList(llista);
+    }
+    public void next() throws FitxerAudioErrorException{
+        Reproductor.seguent();
+    }
+    
+    public void play(){ Reproductor._play(); }
+    public void pause() { Reproductor._pause(); }
+    public void stop(){ Reproductor._stop(); }
+    
+    public void setRandom() {
+        Modelo.setRandom();
+        Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
+    }
+
+    public void setCiclic() {
+        Modelo.setCiclic();
+        Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
+    }
     
 }
