@@ -95,4 +95,8 @@ public class LlistaReproduccio implements Serializable {
         return this.llista.taula.get(posicio-1);
     }
     
+    public LlistaFitxers donaLlistaFitxers(){
+        return this.llista;
+    }
+    
 }

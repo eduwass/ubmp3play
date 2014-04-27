@@ -29,6 +29,8 @@ public class DadesReproductor implements Serializable {
     // debemos declarar el serialVersionUID del  para garantizar la serialización!
     private static final long serialVersionUID = 123456789;
     
+    public boolean ciclic;
+    public boolean aleatori;
     // ========================
     // Funciones
     // ========================  
@@ -39,6 +41,8 @@ public class DadesReproductor implements Serializable {
     public DadesReproductor(){
         this.biblioteca = new LlistaFitxers();
         this.llistes_reproduccio = new ArrayList<>();
+        this.ciclic = true;
+        this.aleatori = false;
     }
     
     /**
@@ -236,6 +240,16 @@ public class DadesReproductor implements Serializable {
     public void carregarDadesReproductor(DadesReproductor readObject) {
         this.biblioteca = readObject.biblioteca;
         this.llistes_reproduccio = readObject.llistes_reproduccio;
+    }
+    
+    public void setRandom(){
+        this.aleatori = true;
+        this.ciclic = false;
+    }
+    
+    public void setCiclic(){
+        this.aleatori = false;
+        this.ciclic = true;
     }
     
 }
