@@ -53,8 +53,10 @@ public class CtrlReproductor {
     /**
      * Afegeix fitxer donat a biblioteca
      * @param fa 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix 
      */
-    public void afegirFitxer(FitxerAudio fa){
+    public void afegirFitxer(FitxerAudio fa) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix{
         Modelo.afegirFitxerBiblioteca(fa);
     }
     
@@ -118,9 +120,10 @@ public class CtrlReproductor {
     
     /**
      * Mostra per pantalla continguts de biblioteca
+     * @return str
      */
-    public void mostrarBiblioteca(){
-        Modelo.mostrarBiblioteca();
+    public String mostrarBiblioteca(){
+        return Modelo.mostrarBiblioteca();
     }
     
     /**
@@ -187,14 +190,27 @@ public class CtrlReproductor {
         return Modelo.donaLlista(posicio);
     }
 
-    public void mostrarLlista(LlistaReproduccio llista) {
-        Modelo.mostrarLlista(llista);
+    /**
+     * Mostra llista per pantalla
+     * @param llista 
+     * @return str 
+     */
+    public String mostrarLlista(LlistaReproduccio llista) {
+        return Modelo.mostrarLlista(llista);
     }
 
+    /**
+     * Retorna l'objecte DadesReproductor
+     * @return 
+     */
     public Object donaDadesReproductor() {
         return Modelo.donaDadesReproductor();
     }
 
+    /**
+     * Carrega dades d'objecte
+     * @param readObject 
+     */
     public void carregarDadesReproductor(DadesReproductor readObject) {
         Modelo.carregarDadesReproductor(readObject);
     }
@@ -229,22 +245,56 @@ public class CtrlReproductor {
     public void playLlista(LlistaFitxers llista) throws FitxerAudioErrorException{
         Reproductor.playFilesList(llista);
     }
+    
+    /**
+     * Reprodueix pista seguent
+     * @throws FitxerAudioErrorException 
+     */
     public void next() throws FitxerAudioErrorException{
         Reproductor.seguent();
     }
     
-    public void play(){ Reproductor._play(); }
-    public void pause() { Reproductor._pause(); }
-    public void stop(){ Reproductor._stop(); }
+    /**
+     * Activa reproducció
+     */
+    public void play(){ 
+        Reproductor._play(); 
+    }
     
-    public void setRandom() {
-        Modelo.setRandom();
+    /**
+     * Pausa reproducció
+     */
+    public void pause() { 
+        Reproductor._pause(); 
+    }
+    
+    /**
+     * Para reproducció
+     */
+    public void stop(){ 
+        Reproductor._stop(); 
+    }
+    
+    /**
+     * Estableix reproducció aleatoria
+     * @return bool estat
+     */
+    public boolean setRandom() {
+        if(Modelo.aleatori==true)  Modelo.setRandom(false);
+        else Modelo.setRandom(true);
         Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
+        return Modelo.aleatori;
     }
 
-    public void setCiclic() {
-        Modelo.setCiclic();
+    /**
+     * Estableix reproducció cíclica
+     * @return bool estat
+     */
+    public boolean setCiclic() {
+        if(Modelo.ciclic==true)  Modelo.setCiclic(false);
+        else Modelo.setCiclic(true);
         Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
+        return Modelo.ciclic;
     }
     
 }

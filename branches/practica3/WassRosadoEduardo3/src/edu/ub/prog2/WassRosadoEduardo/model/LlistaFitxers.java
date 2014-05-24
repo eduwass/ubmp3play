@@ -4,8 +4,12 @@
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit;
+import java.io.File;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.Scanner;
 
 /**
  *
@@ -33,8 +37,9 @@ public class LlistaFitxers implements Serializable {
     
     /**
      * Mostra llista per pantalla
+     * @return string
      */
-    public void mostrarLlista(){
+    public String mostrarLlista(){
         if (this.taula.size()>0){
             int i = 1;
             String retorn = "";
@@ -43,9 +48,10 @@ public class LlistaFitxers implements Serializable {
                 retorn += f;
                 i++;
             }
-            System.out.println(retorn);            
+            return retorn;          
         } else {
-            System.out.println("No hi ha fitxers.");
+            String retorn = "No hi ha fitxers.";
+            return retorn;
         }
 
     }
@@ -67,8 +73,34 @@ public class LlistaFitxers implements Serializable {
     /**
      * Afegeix un fitxer a la Llista donat fitxer
      * @param f
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix
      */
-    public void afegirFitxer(FitxerAudio f){
+    public void afegirFitxer(FitxerAudio f) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix{
+        // Comprovar si existeix ruta
+        File fitxer = new File(f.getPath());
+        if(fitxer.exists()){
+            // Comprovar si esta repe:
+            if(existeixFitxer(f)){
+                // lanzar excepcion
+                throw new ExcepcioFitxerRepetit();
+            } else {
+                // Creem un objecte per llegir des del teclat
+                Scanner sc = new Scanner(System.in);
+                f.demanaDadesTeclat(sc);
+                // Llamar a controlador para que inserte fichero
+                taula.add(f);              
+            }                
+        } else {
+            throw new ExcepcioFitxerNoExisteix();
+        }
+    }
+    
+    /**
+     * Accedir direcatmente al metode add de la taula
+     * @param f 
+     */
+    public void simpleAdd(FitxerAudio f){
         taula.add(f);
     }
     

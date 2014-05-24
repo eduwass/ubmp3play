@@ -44,9 +44,10 @@ public class LlistaReproduccio implements Serializable {
  
      /**
      * Mostra llista per pantalla
+     * @return str
      */
-    public void mostrarLlista(){
-        this.llista.mostrarLlista();
+    public String mostrarLlista(){
+        return this.llista.mostrarLlista();
     }
     
      /**
@@ -66,7 +67,7 @@ public class LlistaReproduccio implements Serializable {
             // Comprovar que nombre elements no sigui > n
             System.out.println("Error: llista plena, no es poden afegir mes fitxers.");
         } else {
-            this.llista.afegirFitxer(f);
+            this.llista.simpleAdd(f);
         }
     }
     
@@ -95,6 +96,10 @@ public class LlistaReproduccio implements Serializable {
         return this.llista.taula.get(posicio-1);
     }
     
+    /**
+     * Dona llista de fitxers
+     * @return LlistaFitxers
+     */
     public LlistaFitxers donaLlistaFitxers(){
         return this.llista;
     }
