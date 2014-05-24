@@ -5,6 +5,8 @@
 
 
 package edu.ub.prog2.WassRosadoEduardo.model;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class DadesReproductor implements Serializable {
     public DadesReproductor(){
         this.biblioteca = new LlistaFitxers();
         this.llistes_reproduccio = new ArrayList<>();
-        this.ciclic = true;
+        this.ciclic = false;
         this.aleatori = false;
     }
     
@@ -68,8 +70,10 @@ public class DadesReproductor implements Serializable {
     /**
      * Afegir un fitxer a la biblioteca donat fitxer
      * @param fitxer 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix 
      */
-    public void afegirFitxerBiblioteca(FitxerAudio fitxer) {
+    public void afegirFitxerBiblioteca(FitxerAudio fitxer) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix {
         biblioteca.afegirFitxer(fitxer);
     }
     
@@ -140,17 +144,19 @@ public class DadesReproductor implements Serializable {
     
     /**
      * Mostra biblioteca per pantalla
+     * @return str
      */
-    public void mostrarBiblioteca(){
-        biblioteca.mostrarLlista();
+    public String mostrarBiblioteca(){
+        return biblioteca.mostrarLlista();
     }
     
     /**
      * Mostra continguts llista reproducció
      * @param llista 
+     * @return  str
      */
-    public void mostrarLlista(LlistaReproduccio llista){
-        llista.mostrarLlista();
+    public String mostrarLlista(LlistaReproduccio llista){
+        return llista.mostrarLlista();
     }
     
     /**
@@ -237,19 +243,27 @@ public class DadesReproductor implements Serializable {
         return this;
     }
 
+    /**
+     * Carrega dades d'objecte
+     * @param readObject 
+     */
     public void carregarDadesReproductor(DadesReproductor readObject) {
         this.biblioteca = readObject.biblioteca;
         this.llistes_reproduccio = readObject.llistes_reproduccio;
     }
     
-    public void setRandom(){
-        this.aleatori = true;
-        this.ciclic = false;
+    /**
+     * Estableix reproducció aleatoria
+     */
+    public void setRandom(boolean valor){
+        this.aleatori = valor;
     }
     
-    public void setCiclic(){
-        this.aleatori = false;
-        this.ciclic = true;
+    /**
+     * Estableix reproducció cíclica
+     */
+    public void setCiclic(boolean valor){
+        this.ciclic = valor;
     }
     
 }

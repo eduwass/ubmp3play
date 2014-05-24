@@ -13,3 +13,4 @@ import edu.ub.prog2.utils.FitxerAudioErrorException;
  */
 public class ExcepcioFitxerRepetit extends FitxerAudioErrorException{
 }
+
