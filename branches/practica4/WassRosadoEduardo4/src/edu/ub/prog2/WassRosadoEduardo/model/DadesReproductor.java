@@ -78,6 +78,18 @@ public class DadesReproductor implements Serializable {
     }
     
     /**
+     * Afegir un fitxer a la biblioteca donat fitxer
+     *
+     * @param fitxer
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit
+     * @throws
+     * edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix
+     */
+    public void afegirFitxerSimple(FitxerAudio fitxer) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix {
+        biblioteca.simpleAdd(fitxer,true);
+    }
+    
+    /**
      * Eliminar fitxer de la biblioteca i llistes donat fitxer
      * @param fitxer 
      */
@@ -132,6 +144,15 @@ public class DadesReproductor implements Serializable {
      */
     public void eliminarFitxerLlista(FitxerAudio fitxer, LlistaReproduccio lrep){
         lrep.eliminarFitxer(fitxer);
+    }
+    
+    /**
+     * Eliminar fitxer de llista reproducció donat index i llista
+     * @param i
+     * @param lrep 
+     */
+    public void eliminarFitxerLlista(int i, LlistaReproduccio lrep){
+        lrep.eliminarFitxer(i);
     }
     
     /**
@@ -264,6 +285,10 @@ public class DadesReproductor implements Serializable {
      */
     public void setCiclic(boolean valor){
         this.ciclic = valor;
+    }
+
+    public ArrayList<LlistaReproduccio> donaLListes() {
+        return this.llistes_reproduccio;
     }
     
 }

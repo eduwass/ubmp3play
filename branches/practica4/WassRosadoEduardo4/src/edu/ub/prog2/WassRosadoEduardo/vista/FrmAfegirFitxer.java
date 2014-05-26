@@ -11,32 +11,30 @@ import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit;
 import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.WindowConstants;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
+ * Clase que implementa vista de ventana que surt al afegir fitxer
  * @author ewass
  */
 public class FrmAfegirFitxer extends javax.swing.JFrame {
 
-    private final javax.swing.JFrame parent;
-    private CtrlReproductor Controlador;
+    private final ReproductorUB4 parent;
+    private final CtrlReproductor Controlador;
     
     /**
      * Creates new form FrmAfegirFitxer
      * @param ParentFrame
-     * @param Controlador
      */
-    public FrmAfegirFitxer(javax.swing.JFrame ParentFrame, CtrlReproductor Controlador) {
+    public FrmAfegirFitxer(ReproductorUB4 ParentFrame) {
         initComponents();
         // Pasamos parent frame
         this.parent = ParentFrame;
         // Centrar ventana
         this.setLocationRelativeTo(null);
-        
         // Enlace a controlador
-        this.Controlador = Controlador;
+        this.Controlador = ParentFrame.DonaControlador();
     }
 
     /**
@@ -59,13 +57,13 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
         labelAlbum = new javax.swing.JLabel();
         txtAlbum = new javax.swing.JTextField();
         labelPista = new javax.swing.JLabel();
-        txtPista = new javax.swing.JTextField();
+        txtPista = new javax.swing.JFormattedTextField();
         labelDiscografica = new javax.swing.JLabel();
         txtDiscografica = new javax.swing.JTextField();
         labelDuracion = new javax.swing.JLabel();
-        txtDuracion = new javax.swing.JTextField();
+        txtDuracion = new javax.swing.JFormattedTextField();
         labelAno = new javax.swing.JLabel();
-        txtAno = new javax.swing.JTextField();
+        txtAno = new javax.swing.JFormattedTextField();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -102,14 +100,35 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
         labelPista.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelPista.setText("Pista:");
 
+        txtPista.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("##"))));
+        txtPista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPistaActionPerformed(evt);
+            }
+        });
+
         labelDiscografica.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelDiscografica.setText("Discográfica:");
 
         labelDuracion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelDuracion.setText("Duración");
 
+        txtDuracion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("####"))));
+        txtDuracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDuracionActionPerformed(evt);
+            }
+        });
+
         labelAno.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelAno.setText("Año:");
+
+        txtAno.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("####"))));
+        txtAno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAnoActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -194,21 +213,21 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
                     .addComponent(txtAlbum)
                     .addComponent(labelAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtPista)
-                    .addComponent(labelPista, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelPista, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtDiscografica)
                     .addComponent(labelDiscografica, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDuracion)
-                    .addComponent(labelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtAno)
-                    .addComponent(labelAno, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelAno, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
@@ -236,6 +255,10 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRutaActionPerformed
 
+    /**
+     * Accio al clickar boto ruta
+     * @param evt 
+     */
     private void btnRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaActionPerformed
         File fitxer;
         //Creació del selector de fitxer
@@ -256,23 +279,57 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRutaActionPerformed
 
+    /**
+     * Accio al clickar acceptar
+     * @param evt 
+     */
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         FitxerAudio f = new FitxerAudio(txtRuta.getText());
+        
+        if(!"".equals(txtNombre.getText()))         f.setNombre(txtNombre.getText());
+        if(!"".equals(txtArtista.getText()))        f.setAutor(txtArtista.getText());
+        if(!"".equals(txtAlbum.getText()))          f.setDisco(txtAlbum.getText());
+        if(!"".equals(txtDiscografica.getText()))   f.setDiscografica(txtDiscografica.getText());
+
+        if(!"".equals(txtPista.getText()))          f.setNumero( Short.parseShort(txtPista.getText()) );
+        if(!"".equals(txtDuracion.getText()))       f.setDuracion( Double.parseDouble(txtDuracion.getText()) );
+        if(!"".equals(txtAno.getText()))            f.setAno( Short.parseShort(txtAno.getText()) );
+        
         // Llamar a controlador para que inserte fichero
         try {
-            Controlador.afegirFitxer(f);
+            Controlador.afegirFitxerSimple(f);
+            System.out.println(Controlador.mostrarBiblioteca());
+            this.dispose();
+            this.parent.setVisible(true);
+            this.parent.reload();
         } catch(ExcepcioFitxerNoExisteix ex1){
-            System.out.println("La ruta no existeix.");
+            JOptionPane.showMessageDialog(null, "La ruta no existe!");
         } catch(ExcepcioFitxerRepetit ex2){
-            System.out.println("El fitxer ja existeix.");
+            JOptionPane.showMessageDialog(null, "El fichero ya existe!");
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
+    /**
+     * Accio al clicar cancelar
+     * @param evt 
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
         this.parent.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtPistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPistaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPistaActionPerformed
+
+    private void txtAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAnoActionPerformed
+
+    private void txtDuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDuracionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDuracionActionPerformed
 
 
 
@@ -290,12 +347,12 @@ public class FrmAfegirFitxer extends javax.swing.JFrame {
     private javax.swing.JLabel labelPista;
     private javax.swing.JLabel labelRuta;
     private javax.swing.JTextField txtAlbum;
-    private javax.swing.JTextField txtAno;
+    private javax.swing.JFormattedTextField txtAno;
     private javax.swing.JTextField txtArtista;
     private javax.swing.JTextField txtDiscografica;
-    private javax.swing.JTextField txtDuracion;
+    private javax.swing.JFormattedTextField txtDuracion;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPista;
+    private javax.swing.JFormattedTextField txtPista;
     private javax.swing.JTextField txtRuta;
     // End of variables declaration//GEN-END:variables
 

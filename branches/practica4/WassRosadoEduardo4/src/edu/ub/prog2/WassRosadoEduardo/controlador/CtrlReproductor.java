@@ -61,6 +61,16 @@ public class CtrlReproductor {
     }
     
     /**
+     * Afegeix un fitxer sense demanar res per teclat
+     * @param fa 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix 
+     */
+    public void afegirFitxerSimple(FitxerAudio fa) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix{
+        Modelo.afegirFitxerSimple(fa);
+    }
+    
+    /**
      * Afegeix fitxer donat a la llista de reproduccio donada
      * @param fa
      * @param llista 
@@ -84,6 +94,15 @@ public class CtrlReproductor {
      */
     public void eliminarFitxer(FitxerAudio fa, LlistaReproduccio llista){
         Modelo.eliminarFitxerLlista(fa, llista);
+    }
+    
+    /**
+     * Eliminar fitxer de llista repr. donat index i llista
+     * @param i
+     * @param llista 
+     */
+    public void eliminarFitxer(int i, LlistaReproduccio llista){
+        Modelo.eliminarFitxerLlista(i, llista);
     }
     
     /**
@@ -229,7 +248,7 @@ public class CtrlReproductor {
      */
     public void playFitxer(FitxerAudio fitxer) throws FitxerAudioErrorException{
         LlistaFitxers list = new LlistaFitxers();
-        list.afegirFitxer(fitxer);
+        list.simpleAdd(fitxer,false);
         this.playLlista(list);
     }
     
@@ -295,6 +314,10 @@ public class CtrlReproductor {
         else Modelo.setCiclic(true);
         Reproductor.setCtrlFlags(Modelo.ciclic, Modelo.aleatori);
         return Modelo.ciclic;
+    }
+
+    public ArrayList<LlistaReproduccio> donaLlistes() {
+        return Modelo.donaLListes();
     }
     
 }

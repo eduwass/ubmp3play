@@ -106,5 +106,38 @@ public class FitxerAudio extends File implements Serializable {
                 " | Fitxer: <"+this.getPath()+"> |\n";
         return retorn;
     }
+    
+    // Setters:
+    
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setAutor(String autor){
+        this.autor = autor;
+    }
+
+    public void setDisco(String disco){
+        this.disco = disco;
+    }
+
+    public void setDiscografica(String discografica){
+        this.discografica = discografica;
+    }
+    
+    public void setDuracion(double duracion){
+        this.duracion = duracion;
+    }
+    
+    public void setAno(short ano){
+        this.ano = ano;
+    }
+    
+    public void setNumero(short numero){
+        this.numero = numero;
+    }
+    
+    
+
       
 }

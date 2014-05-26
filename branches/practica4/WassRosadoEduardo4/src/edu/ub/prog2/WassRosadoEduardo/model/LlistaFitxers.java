@@ -99,9 +99,30 @@ public class LlistaFitxers implements Serializable {
     /**
      * Accedir direcatmente al metode add de la taula
      * @param f 
+     * @param comprovacions 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit 
+     * @throws edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix 
      */
-    public void simpleAdd(FitxerAudio f){
-        taula.add(f);
+    public void simpleAdd(FitxerAudio f, boolean comprovacions) throws ExcepcioFitxerRepetit, ExcepcioFitxerNoExisteix{
+        if(!comprovacions){
+            taula.add(f);
+        } else {
+            // Comprovar si existeix ruta
+            File fitxer = new File(f.getPath());
+            if (fitxer.exists()) {
+                // Comprovar si esta repe:
+                if (existeixFitxer(f)) {
+                    // lanzar excepcion
+                    throw new ExcepcioFitxerRepetit();
+                } else {
+                    // add
+                    taula.add(f);
+                }
+            } else {
+                throw new ExcepcioFitxerNoExisteix();
+            }  
+        }
+
     }
     
     /**
@@ -113,11 +134,27 @@ public class LlistaFitxers implements Serializable {
     }
     
     /**
+     * Eliminar fitxer per index
+     * @param i 
+     */
+    public void eliminarFitxer(int i){
+        taula.remove(i);
+    }
+    
+    /**
      * Retorna tamany de la llista
      * @return int
      */
     public int tamany(){
         return taula.size();
+    }
+    
+    /**
+     * Retorna taula amb els fitxers
+     * @return taula amb els fitxers
+     */
+    public ArrayList <FitxerAudio> donaTaula(){
+        return taula;
     }
     
 }
