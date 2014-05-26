@@ -4,7 +4,11 @@
  */
 
 package edu.ub.prog2.WassRosadoEduardo.model;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerNoExisteix;
+import edu.ub.prog2.WassRosadoEduardo.controlador.ExcepcioFitxerRepetit;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,7 +71,13 @@ public class LlistaReproduccio implements Serializable {
             // Comprovar que nombre elements no sigui > n
             System.out.println("Error: llista plena, no es poden afegir mes fitxers.");
         } else {
-            this.llista.simpleAdd(f);
+            try {
+                this.llista.simpleAdd(f,false);
+            } catch (ExcepcioFitxerRepetit ex) {
+                Logger.getLogger(LlistaReproduccio.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExcepcioFitxerNoExisteix ex) {
+                Logger.getLogger(LlistaReproduccio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
@@ -77,6 +87,14 @@ public class LlistaReproduccio implements Serializable {
      */
     public void eliminarFitxer(FitxerAudio f){
         this.llista.eliminarFitxer(f);
+    }
+    
+    /**
+     * Eliminar fitxer donat index de fitxer
+     * @param i 
+     */
+    public void eliminarFitxer(int i){
+        this.llista.eliminarFitxer(i-1);
     }
     
     /**
@@ -104,4 +122,10 @@ public class LlistaReproduccio implements Serializable {
         return this.llista;
     }
     
+    /**
+     * Dona limit tamany llista
+     */
+    public int donaLimit(){
+        return this.n;
+    }
 }

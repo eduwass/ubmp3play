@@ -11,9 +11,19 @@ import javax.swing.UIManager;
 
 // Control
 import edu.ub.prog2.WassRosadoEduardo.controlador.CtrlReproductor;
+import edu.ub.prog2.WassRosadoEduardo.model.FitxerAudio;
+import edu.ub.prog2.WassRosadoEduardo.model.LlistaFitxers;
+import edu.ub.prog2.WassRosadoEduardo.model.LlistaReproduccio;
+import edu.ub.prog2.utils.FitxerAudioErrorException;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
- *
+ * Nova classe vista feta amb SWING
  * @author ewass
  */
 public class ReproductorUB4 extends javax.swing.JFrame {
@@ -44,6 +54,9 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         
         // Inicializar control
         this.Controlador = new CtrlReproductor();
+        
+        // Cargar info:
+        this.reload();
     }
 
     /**
@@ -89,8 +102,8 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         btnPause = new javax.swing.JMenu();
         btnStop = new javax.swing.JMenu();
         btnNext = new javax.swing.JMenu();
-        btnRandom = new javax.swing.JMenu();
-        btnRepeat = new javax.swing.JMenu();
+        btnRepetir = new javax.swing.JMenu();
+        btnAleatori = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UB MP3 Player");
@@ -131,11 +144,7 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         });
         toolbarBiblioteca.add(btnPLayBiblioteca);
 
-        bibliotecaLista.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        bibliotecaLista.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         bibliotecaScrollPane.setViewportView(bibliotecaLista);
 
         javax.swing.GroupLayout panelBibliotecaLayout = new javax.swing.GroupLayout(panelBiblioteca);
@@ -150,7 +159,7 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         panelBibliotecaLayout.setVerticalGroup(
             panelBibliotecaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBibliotecaLayout.createSequentialGroup()
-                .addComponent(bibliotecaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(bibliotecaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -203,14 +212,15 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         });
         toolbarListas.add(btnPlayLista);
 
-        listasLista.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        listasLista.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listasScrollPane.setViewportView(listasLista);
 
-        listasCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        listasCombo.setToolTipText("");
+        listasCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listasComboActionPerformed(evt);
+            }
+        });
 
         toolbarListas2.setFloatable(false);
         toolbarListas2.setBorderPainted(false);
@@ -222,6 +232,11 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         btnAddCancion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAddCancion.setInheritsPopupMenu(true);
         btnAddCancion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAddCancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCancionActionPerformed(evt);
+            }
+        });
         toolbarListas2.add(btnAddCancion);
 
         btnDelCancion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cd_delete.png"))); // NOI18N
@@ -229,6 +244,11 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         btnDelCancion.setFocusable(false);
         btnDelCancion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDelCancion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDelCancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelCancionActionPerformed(evt);
+            }
+        });
         toolbarListas2.add(btnDelCancion);
 
         btnPlayCancion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_play_blue.png"))); // NOI18N
@@ -236,6 +256,11 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         btnPlayCancion.setFocusable(false);
         btnPlayCancion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPlayCancion.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPlayCancion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayCancionActionPerformed(evt);
+            }
+        });
         toolbarListas2.add(btnPlayCancion);
 
         javax.swing.GroupLayout panelListasLayout = new javax.swing.GroupLayout(panelListas);
@@ -245,9 +270,12 @@ public class ReproductorUB4 extends javax.swing.JFrame {
             .addGroup(panelListasLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelListasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(listasCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(listasCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 397, Short.MAX_VALUE)
                     .addComponent(listasScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(toolbarListas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelListasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(toolbarListas2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)))
                 .addContainerGap())
         );
         panelListasLayout.setVerticalGroup(
@@ -258,7 +286,7 @@ public class ReproductorUB4 extends javax.swing.JFrame {
                 .addComponent(listasScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(toolbarListas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout tabListasLayout = new javax.swing.GroupLayout(tabListas);
@@ -273,30 +301,64 @@ public class ReproductorUB4 extends javax.swing.JFrame {
             .addGroup(tabListasLayout.createSequentialGroup()
                 .addComponent(toolbarListas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelListas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelListas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabs.addTab("Listas de Reproducción", tabListas);
 
+        menuPrincipal.setFocusable(false);
         menuPrincipal.setPreferredSize(new java.awt.Dimension(246, 44));
+        menuPrincipal.setRequestFocusEnabled(false);
+        menuPrincipal.setVerifyInputWhenFocusTarget(false);
 
         btnPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_play_blue.png"))); // NOI18N
+        btnPlay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPlayMouseClicked(evt);
+            }
+        });
         menuPrincipal.add(btnPlay);
 
         btnPause.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_pause_blue.png"))); // NOI18N
+        btnPause.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPauseMouseClicked(evt);
+            }
+        });
         menuPrincipal.add(btnPause);
 
         btnStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_stop_blue.png"))); // NOI18N
+        btnStop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnStopMouseClicked(evt);
+            }
+        });
         menuPrincipal.add(btnStop);
 
         btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_fastforward_blue.png"))); // NOI18N
+        btnNext.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNextMouseClicked(evt);
+            }
+        });
         menuPrincipal.add(btnNext);
 
-        btnRandom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_repeat_blue.png"))); // NOI18N
-        menuPrincipal.add(btnRandom);
+        btnRepetir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/control_repeat_blue.png"))); // NOI18N
+        btnRepetir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRepetirMouseClicked(evt);
+            }
+        });
+        menuPrincipal.add(btnRepetir);
 
-        btnRepeat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_switch.png"))); // NOI18N
-        menuPrincipal.add(btnRepeat);
+        btnAleatori.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow_switch.png"))); // NOI18N
+        btnAleatori.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAleatoriMouseClicked(evt);
+            }
+        });
+        menuPrincipal.add(btnAleatori);
 
         setJMenuBar(menuPrincipal);
 
@@ -308,38 +370,264 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Boto per reproduir biblioteca
+     * @param evt 
+     */
     private void btnPLayBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPLayBibliotecaActionPerformed
-        // TODO add your handling code here:
+        try {
+            Controlador.playLlista(Controlador.getBiblioteca());
+        } catch (FitxerAudioErrorException ex) {
+            JOptionPane.showMessageDialog(null, "Error al reproducir archivo.");
+        }
     }//GEN-LAST:event_btnPLayBibliotecaActionPerformed
 
+    /**
+     * Boto per eliminar un fitxer de la biblioteca
+     * @param evt 
+     */
     private void btnDelBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelBibliotecaActionPerformed
-        // TODO add your handling code here:
+        // Obtener indice de fichero a eliminar
+        int indiceFichero = bibliotecaLista.getSelectedIndex()+1;
+        // Crear objeto
+        FitxerAudio f = Controlador.donaFitxerAudio(indiceFichero);
+        // Llamada a controlador
+        Controlador.eliminarFitxer(f);
+        // Recargar vista
+        this.reload();
     }//GEN-LAST:event_btnDelBibliotecaActionPerformed
 
+    /**
+     * Boto per afegir un fitxer a la biblioteca
+     * @param evt 
+     */
     private void btnAddBibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBibliotecaActionPerformed
-        // TODO add your handling code here:
-        FrmAfegirFitxer Ventana = new FrmAfegirFitxer(this, this.Controlador);
+        // Abrir FrmAfegirFitxer
+        FrmAfegirFitxer Ventana = new FrmAfegirFitxer(this);
         Ventana.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnAddBibliotecaActionPerformed
 
+    /**
+     * Boto per afegir una nova llista de repr.
+     * @param evt 
+     */
     private void btnAddListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddListaActionPerformed
-        // TODO add your handling code here:
+        // Pedir por dialog el nombre de la bigList:
+        String nombre = JOptionPane.showInputDialog(null, "Nombre de la nueva lista:", "Nueva Lista",
+                JOptionPane.QUESTION_MESSAGE);
+        // Comprovar que no estigui repetida
+        if (Controlador.existeixLlista(nombre)) {
+            JOptionPane.showMessageDialog(null, "Ya existe una lista con el mismo nombre!");
+        } else {
+            // Si no esta repetida, crear
+            Controlador.crearLlistaReproduccio(nombre);
+            // Recargar vista
+            this.reloadListas();
+        }
+        
     }//GEN-LAST:event_btnAddListaActionPerformed
 
+    /**
+     * Boto per eliminar una llista
+     * @param evt 
+     */
     private void btnDelListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelListaActionPerformed
-        // TODO add your handling code here:
+        // Obtener indice a eliminar
+        int indice = listasCombo.getSelectedIndex() + 1;
+        // Llamar a controlador para eliminar
+        Controlador.eliminarLlistaReproduccio(indice);
+        // Recargar vista
+        this.reloadListas();
     }//GEN-LAST:event_btnDelListaActionPerformed
 
+    /**
+     * Boto per reproduir llista
+     * @param evt 
+     */
     private void btnPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayListaActionPerformed
-        // TODO add your handling code here:
+        // Obtener indice lista
+        int indice = listasCombo.getSelectedIndex() + 1;
+        // Reproducir lista
+        LlistaReproduccio l = Controlador.donaLlista(indice);
+        try {
+            Controlador.playLlista(l.donaLlistaFitxers());
+        } catch (FitxerAudioErrorException ex) {
+            JOptionPane.showMessageDialog(null, "Error al reproducir archivo.");
+        }
     }//GEN-LAST:event_btnPlayListaActionPerformed
+
+    /**
+     * Boto per afegir canco a llista
+     * @param evt 
+     */
+    private void btnAddCancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCancionActionPerformed
+        // Obtener indice de lista seleccionada
+        int indice = listasCombo.getSelectedIndex() + 1;
+        if(indice<=0){
+            // Si no hay bigList
+            JOptionPane.showMessageDialog(null, "Primero debes crear una lista!");
+        } else {
+            // Cargar llista 
+            LlistaReproduccio llista = Controlador.donaLlista(indice);
+            if(llista.donaTamany()>=llista.donaLimit()){
+                // Mostrar error
+                JOptionPane.showMessageDialog(null, "Lista llena, no se pueden añadir más canciones!");
+            } else {
+                // Mostrar panel para seleccionar cancion a añadir:
+                String[] bigList = new String[30];
+                // Obtener biblioteca del controlador:
+                LlistaFitxers biblioteca = Controlador.getBiblioteca();
+                // Recorrer y añadir a modelo
+                for (int i = 0; i < Controlador.donaTamanyBiblioteca(); i++) {
+                    bigList[i] = "[" + (i + 1) + "] " + Controlador.donaFitxerAudio(i + 1).toString();
+                }
+                // Mostrar panel donde seleccionar cancion:
+                Object resp = JOptionPane.showInputDialog(null, "Selecciona la canción que quieres añadir", "Canción", JOptionPane.QUESTION_MESSAGE,
+                        null, bigList, "Titan");
+                String respuesta = resp.toString();
+                // Regex para obtener indice cancion
+                Pattern pattern = Pattern.compile("\\[(.*)\\]");
+                Matcher coincidencias = pattern.matcher(respuesta);
+                coincidencias.find();
+                String indiceCancion = coincidencias.group(1);
+                // Añadir cancion a lista
+                FitxerAudio cancion = Controlador.donaFitxerAudio(Integer.parseInt(indiceCancion));
+                Controlador.afegirFitxer(cancion, llista);
+                // Recargar vista
+                this.reloadCancionesListas();
+            }
+            
+        }
+        
+    }//GEN-LAST:event_btnAddCancionActionPerformed
+
+    /**
+     * Boto per eliminar canco de llista
+     * @param evt 
+     */
+    private void btnDelCancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelCancionActionPerformed
+        // Obtener indice de lista seleccionada
+        int indice = listasCombo.getSelectedIndex() + 1;
+        if (indice <= 0) {
+            // Si no hay bigList
+            JOptionPane.showMessageDialog(null, "Primero debes crear una lista!");
+        } else {
+            // Cargar llista 
+            LlistaReproduccio llista = Controlador.donaLlista(indice);
+            // Obtener indice de cancion de lista seleccionada
+            int indiceCancionLista = listasLista.getSelectedIndex()+1;
+            Controlador.eliminarFitxer(indiceCancionLista, llista);
+            // Recargar vista
+            this.reload();
+        }
+    }//GEN-LAST:event_btnDelCancionActionPerformed
+
+    /**
+     * Accio al canviar el combo de llistes
+     * @param evt 
+     */
+    private void listasComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listasComboActionPerformed
+        // Recargar canciones lista
+        reloadCancionesListas();
+    }//GEN-LAST:event_listasComboActionPerformed
+
+    /**
+     * Boto per reproduir una canco de la llista
+     * @param evt 
+     */
+    private void btnPlayCancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayCancionActionPerformed
+        // Obtener indice de lista seleccionada
+        int indice = listasCombo.getSelectedIndex() + 1;
+        if (indice <= 0) {
+            // Si no hay bigList
+            JOptionPane.showMessageDialog(null, "Primero debes crear una lista!");
+        } else {
+            // Cargar llista
+            LlistaReproduccio llista = Controlador.donaLlista(indice);
+            if(listasLista.getModel().getSize()>0){
+                // Obtener indice de cancion de lista seleccionada
+                int indiceCancionLista = listasLista.getSelectedIndex() + 1;
+                System.out.println("ola");
+                FitxerAudio f = Controlador.donaFitxerAudio(indiceCancionLista, llista);
+                try {
+                    // Reproducir fichero
+                    Controlador.playFitxer(f);
+                } catch (FitxerAudioErrorException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al reproducir archivo.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Primero debes añadir alguna canción!");
+            }
+            
+        }
+    }//GEN-LAST:event_btnPlayCancionActionPerformed
+
+    /**
+     * Boto Play
+     * @param evt 
+     */
+    private void btnPlayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPlayMouseClicked
+        // TODO add your handling code here:
+        Controlador.play();
+    }//GEN-LAST:event_btnPlayMouseClicked
+
+    /**
+     * Boto Pause
+     * @param evt 
+     */
+    private void btnPauseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPauseMouseClicked
+        // TODO add your handling code here:
+        Controlador.pause();
+    }//GEN-LAST:event_btnPauseMouseClicked
+
+    /**
+     * Boto Stop
+     * @param evt 
+     */
+    private void btnStopMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStopMouseClicked
+        // TODO add your handling code here:
+        Controlador.stop();
+    }//GEN-LAST:event_btnStopMouseClicked
+
+    /**
+     * Boto Next
+     * @param evt 
+     */
+    private void btnNextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseClicked
+        try {
+            // TODO add your handling code here:
+            Controlador.next();
+        } catch (FitxerAudioErrorException ex) {
+            JOptionPane.showMessageDialog(null, "Error al reproducir archivo.");
+        }
+    }//GEN-LAST:event_btnNextMouseClicked
+
+    /**
+     * Boto Ciclic
+     * @param evt 
+     */
+    private void btnRepetirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRepetirMouseClicked
+        // TODO add your handling code here:
+        Controlador.setCiclic();
+    }//GEN-LAST:event_btnRepetirMouseClicked
+
+    /**
+     * Boto Aleatori
+     * @param evt 
+     */
+    private void btnAleatoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAleatoriMouseClicked
+        // TODO add your handling code here:
+        Controlador.setRandom();
+    }//GEN-LAST:event_btnAleatoriMouseClicked
 
     /**
      * @param args the command line arguments
@@ -376,12 +664,95 @@ public class ReproductorUB4 extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Se encarga de recargar todos los componentes de la vista de modo que
+     * se correspondan al modelo de datos
+     */
+    public void reload(){
+        // Recargando vista
+        System.out.println("Recargando vista...");
+        
+        //**************************************
+        // Lista de Biblioteca
+        //**************************************
+        reloadBiblioteca();
+        
+        //**************************************
+        // Listas de reproduccion
+        //**************************************
+        reloadListas();
+        
+        //**************************************
+        // Lista de bigList de repr. seleccionada
+        //**************************************
+        reloadCancionesListas();
+        
+        
+    }
+
+    /**
+     * Recarrega controls de biblioteca
+     */
+    public void reloadBiblioteca(){
+        // Crear modelo
+        DefaultListModel bibliotecaModel = new DefaultListModel();
+        // Obtener biblioteca del controlador:
+        LlistaFitxers biblioteca = Controlador.getBiblioteca();
+        // Recorrer y añadir a modelo
+        for (FitxerAudio f : biblioteca.taula) {
+            bibliotecaModel.addElement(f);
+        }
+        // Set modelo
+        bibliotecaLista.setModel(bibliotecaModel);
+    }
+    
+    /**
+     * Recarrega controles de llistes
+     */
+    public void reloadListas(){
+        // Crear modelo
+        DefaultComboBoxModel listasModel = new DefaultComboBoxModel();
+        // Obtener listas repr.
+        ArrayList<LlistaReproduccio> llistes_reproduccio = Controlador.donaLlistes();
+        // Recorrer y añadir a modelo:
+        for (LlistaReproduccio l : llistes_reproduccio) {
+            listasModel.addElement(l.getNom());
+        }
+        // Set modelo:
+        listasCombo.setModel(listasModel);
+        // Cambiar siempre a ultima lista añadida
+        listasCombo.setSelectedIndex(listasCombo.getItemCount() - 1);
+    }
+    
+    /**
+     * Recarrega controls de cancons de llista sel.
+     */
+    public void reloadCancionesListas(){
+        // Crear modelo
+        DefaultListModel listModel = new DefaultListModel();
+        // Obtener lista repr. seleccionada:
+        int indiceListaSel = listasCombo.getSelectedIndex() + 1;
+        if (indiceListaSel > 0) {
+            // Obtener canciones lista
+            LlistaReproduccio lista = Controlador.donaLlista(indiceListaSel);
+            LlistaFitxers lf = lista.donaLlistaFitxers();
+            ArrayList<FitxerAudio> donaTaula = lf.donaTaula();
+            // Recorrer y añadir a modelo
+            for (FitxerAudio f : donaTaula) {
+                listModel.addElement(f);
+            }
+            // Set modelo
+            listasLista.setModel(listModel);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList bibliotecaLista;
     private javax.swing.JScrollPane bibliotecaScrollPane;
     private javax.swing.JButton btnAddBiblioteca;
     private javax.swing.JButton btnAddCancion;
     private javax.swing.JButton btnAddLista;
+    private javax.swing.JMenu btnAleatori;
     private javax.swing.JButton btnDelBiblioteca;
     private javax.swing.JButton btnDelCancion;
     private javax.swing.JButton btnDelLista;
@@ -391,8 +762,7 @@ public class ReproductorUB4 extends javax.swing.JFrame {
     private javax.swing.JMenu btnPlay;
     private javax.swing.JButton btnPlayCancion;
     private javax.swing.JButton btnPlayLista;
-    private javax.swing.JMenu btnRandom;
-    private javax.swing.JMenu btnRepeat;
+    private javax.swing.JMenu btnRepetir;
     private javax.swing.JMenu btnStop;
     private javax.swing.JComboBox listasCombo;
     private javax.swing.JList listasLista;
